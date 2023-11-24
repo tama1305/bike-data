@@ -1,0 +1,297 @@
+requirements.txt
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Membaca data
+df_hour = pd.read_csv("hour.csv")
+df_day = pd.read_csv("day.csv")
+
+# Menampilkan lima baris pertama dari setiap dataset
+print("Hourly Data:")
+print(df_hour.head())
+
+print("\nDaily Data:")
+print(df_day.head())
+
+# Visualisasi sederhana
+plt.figure(figsize=(12, 6))
+
+# Line chart untuk tren peminjaman sepeda per jam
+plt.subplot(1, 2, 1)
+plt.plot(df_hour['dteday'], df_hour['cnt'], label='Total Rentals')
+plt.title('Tren Peminjaman Sepeda per Jam (2011-2012)')
+plt.xlabel('Tanggal')
+plt.ylabel('Jumlah Peminjaman Sepeda')
+plt.legend()
+
+# Scatter plot untuk hubungan antara temperatur dan jumlah peminjaman sepeda
+plt.subplot(1, 2, 2)
+sns.scatterplot(x='temp', y='cnt', data=df_hour, alpha=0.5)
+plt.title('Pengaruh Temperatur terhadap Jumlah Peminjaman Sepeda')
+plt.xlabel('Temperatur (Normalized)')
+plt.ylabel('Jumlah Peminjaman Sepeda')
+
+plt.tight_layout()
+plt.show()
+
+# Import library yang diperlukan
+import requests
+from io import StringIO
+
+# URL sumber data
+url_hour = "https://github.com/tama1305/day.csv/blob/50593969fdd9f0fdcbc5014de9e417a4449a4a75/hour.csv"
+url_day = "https://github.com/tama1305/day.csv/blob/50593969fdd9f0fdcbc5014de9e417a4449a4a75/day.csv"
+# Mengunduh data dari URL
+response_hour = requests.get(url_hour).text
+response_day = requests.get(url_day).text
+
+# Membaca data dari string menggunakan StringIO
+df_hour_external = pd.read_csv(StringIO(response_hour))
+df_day_external = pd.read_csv(StringIO(response_day))
+
+# Menyimpan data yang diunduh
+df_hour_external.to_csv("hour_external.csv", index=False)
+df_day_external.to_csv("day_external.csv", index=False)
+
+# Menampilkan lima baris pertama dari setiap dataset yang diunduh
+print("\nExternal Hourly Data:")
+print(df_hour_external.head())
+
+print("\nExternal Daily Data:")
+print(df_day_external.head())
+
+# Membaca dataset
+df_hour = pd.read_csv("hour.csv")
+df_day = pd.read_csv("day.csv")
+
+# Menampilkan informasi struktur data dan beberapa baris pertama
+print("Hourly Data Info:")
+print(df_hour.info())
+print("\nHourly Data Head:")
+print(df_hour.head())
+
+print("\n\nDaily Data Info:")
+print(df_day.info())
+print("\nDaily Data Head:")
+print(df_day.head())
+
+# Statistik deskriptif untuk data jam
+print("\n\nHourly Data Descriptive Statistics:")
+print(df_hour.describe())
+
+# Statistik deskriptif untuk data harian
+print("\n\nDaily Data Descriptive Statistics:")
+print(df_day.describe())
+
+# Mengecek duplikasi dalam data jam
+print("\n\nHourly Data Duplicate Rows:")
+print(df_hour[df_hour.duplicated()])
+
+# Mengecek duplikasi dalam data harian
+print("\n\nDaily Data Duplicate Rows:")
+print(df_day[df_day.duplicated()])
+
+# Mengecek nilai yang hilang dalam data jam
+print("\n\nHourly Data Missing Values:")
+print(df_hour.isnull().sum())
+
+# Mengecek nilai yang hilang dalam data harian
+print("\n\nDaily Data Missing Values:")
+print(df_day.isnull().sum())
+
+# Memeriksa distribusi variabel-variabel numerik dalam data jam
+print("\n\nHourly Data Variable Distribution:")
+print(df_hour[['temp', 'atemp', 'hum', 'windspeed', 'casual', 'registered', 'cnt']].hist(figsize=(10, 8)))
+
+# Memeriksa distribusi variabel-variabel numerik dalam data harian
+print("\n\nDaily Data Variable Distribution:")
+print(df_day[['temp', 'atemp', 'hum', 'windspeed', 'casual', 'registered', 'cnt']].hist(figsize=(10, 8)))
+
+# Mengecek nilai yang hilang dalam data jam
+print("\nHourly Data Missing Values:")
+print(df_hour.isnull().sum())
+
+# Mengecek nilai yang hilang dalam data harian
+print("\nDaily Data Missing Values:")
+print(df_day.isnull().sum())
+
+# Mengatasi nilai yang hilang
+df_hour.fillna(df_hour.mean(), inplace=True)
+df_day.fillna(df_day.mean(), inplace=True)
+
+# Mengecek duplikasi dalam data jam
+print("\nHourly Data Duplicate Rows:")
+print(df_hour[df_hour.duplicated()])
+
+# Mengecek duplikasi dalam data harian
+print("\nDaily Data Duplicate Rows:")
+print(df_day[df_day.duplicated()])
+
+# Menghapus duplikasi
+df_hour.drop_duplicates(inplace=True)
+df_day.drop_duplicates(inplace=True)
+
+# Misalnya, memeriksa nilai yang di luar rentang yang mungkin tidak valid
+# Anda dapat menyesuaikan batas sesuai dengan karakteristik data
+df_hour = df_hour[(df_hour['temp'] >= 0) & (df_hour['temp'] <= 41)]
+df_day = df_day[(df_day['temp'] >= 0) & (df_day['temp'] <= 41)]
+
+# Memeriksa kembali statistik deskriptif setelah perubahan
+print("\nHourly Data Descriptive Statistics:")
+print(df_hour.describe())
+
+print("\nDaily Data Descriptive Statistics:")
+print(df_day.describe())
+
+# Mengubah kolom tanggal menjadi tipe data datetime
+df_hour['dteday'] = pd.to_datetime(df_hour['dteday'])
+df_day['dteday'] = pd.to_datetime(df_day['dteday'])
+
+# Menyimpan data yang sudah di cleaning
+df_hour.to_csv("hour_cleaned.csv", index=False)
+df_day.to_csv("day_cleaned.csv", index=False)
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Membaca data
+df_hour = pd.read_csv("hour.csv")
+df_day = pd.read_csv("day.csv")
+
+# Menampilkan lima baris pertama dari setiap dataset
+print("Hourly Data:")
+print(df_hour.head())
+
+print("\nDaily Data:")
+print(df_day.head())
+
+# Statistik deskriptif
+print("\nHourly Data Descriptive Statistics:")
+print(df_hour.describe())
+
+print("\nDaily Data Descriptive Statistics:")
+print(df_day.describe())
+
+# Distribusi variabel target (cnt: count of total rental bikes)
+plt.figure(figsize=(10, 6))
+sns.histplot(df_hour['cnt'], bins=30, kde=True, color='skyblue')
+plt.title('Distribution of Total Rental Bikes (Hourly)')
+plt.xlabel('Count of Total Rental Bikes')
+plt.ylabel('Frequency')
+plt.show()
+
+# Korelasi antar fitur
+correlation_hourly = df_hour.corr()
+plt.figure(figsize=(12, 8))
+sns.heatmap(correlation_hourly, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Heatmap (Hourly Data)')
+plt.show()
+
+# Hubungan antara beberapa fitur dengan total rental bikes
+plt.figure(figsize=(16, 8))
+sns.pairplot(df_hour[['temp', 'atemp', 'hum', 'windspeed', 'cnt']])
+plt.suptitle('Pair Plot of Temperature, Humidity, Windspeed, and Count (Hourly Data)', y=1.02)
+plt.show()
+
+### Pertanyaan 1:
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Membaca data dari file CSV
+df = pd.read_csv('hour.csv')
+
+# Mengonversi kolom 'dteday' menjadi tipe data datetime
+df['dteday'] = pd.to_datetime(df['dteday'])
+
+# Menyiapkan data untuk visualisasi
+tren_peminjaman = df.groupby('dteday')['cnt'].sum()
+
+# Membuat grafik garis
+plt.figure(figsize=(14, 7))
+plt.plot(tren_peminjaman.index, tren_peminjaman.values, marker='o', linestyle='-', color='b')
+plt.title('Tren Peminjaman Sepeda Seiring Waktu')
+plt.xlabel('Tanggal')
+plt.ylabel('Jumlah Peminjaman')
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.show()
+
+"""### Pertanyaan 2:"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Membaca data dari file CSV
+df = pd.read_csv('hour.csv')
+
+# Mengonversi kolom 'weathersit' menjadi kategori untuk memudahkan visualisasi
+df['weathersit'] = df['weathersit'].astype('category')
+
+# Menyiapkan data untuk visualisasi
+data_pengaruh_cuaca = df.groupby('weathersit')['cnt'].mean().reset_index()
+
+# Membuat grafik batang
+plt.figure(figsize=(10, 6))
+sns.barplot(x='weathersit', y='cnt', data=data_pengaruh_cuaca)
+plt.title('Pengaruh Kondisi Cuaca terhadap Peminjaman Sepeda')
+plt.xlabel('Kondisi Cuaca')
+plt.ylabel('Rata-rata Jumlah Peminjaman')
+plt.show()
+
+"""## Conclusion
+
+- Conclution pertanyaan 1
+- conclution pertanyaan 2
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Membaca data dari file CSV
+df = pd.read_csv('hour.csv')
+
+# Mengonversi kolom 'dteday' menjadi tipe data datetime
+df['dteday'] = pd.to_datetime(df['dteday'])
+
+# Pertanyaan 1: Bagaimana tren peminjaman sepeda berubah seiring waktu?
+
+# Menyiapkan data untuk analisis tren
+tren_peminjaman = df.groupby('dteday')['cnt'].sum()
+
+# Membuat grafik garis untuk melihat tren peminjaman sepeda seiring waktu
+plt.figure(figsize=(14, 7))
+sns.lineplot(x=tren_peminjaman.index, y=tren_peminjaman.values, marker='o', linestyle='-', color='b')
+plt.title('Tren Peminjaman Sepeda Seiring Waktu')
+plt.xlabel('Tanggal')
+plt.ylabel('Jumlah Peminjaman')
+plt.xticks(rotation=45)
+plt.show()
+
+# Kesimpulan Pertanyaan 1
+tren_rata_rata = tren_peminjaman.resample('M').mean()
+tren_naik = tren_rata_rata.diff().gt(0).all()
+
+if tren_naik:
+    print("Kesimpulan Pertanyaan 1: Tren peminjaman sepeda cenderung meningkat seiring waktu.")
+else:
+    print("Kesimpulan Pertanyaan 1: Tidak terdapat tren yang jelas dalam peminjaman sepeda seiring waktu.")
+
+# Pertanyaan 2: Bagaimana pengaruh kondisi cuaca terhadap peminjaman sepeda?
+
+# Menyiapkan data untuk analisis pengaruh kondisi cuaca terhadap peminjaman sepeda
+plt.figure(figsize=(14, 7))
+sns.boxplot(x='weathersit', y='cnt', data=df, palette='viridis')
+plt.title('Pengaruh Kondisi Cuaca terhadap Peminjaman Sepeda')
+plt.xlabel('Kondisi Cuaca')
+plt.ylabel('Jumlah Peminjaman')
+plt.show()
+
+# Kesimpulan Pertanyaan 2
+print("Kesimpulan Pertanyaan 2: Kondisi cuaca mempengaruhi peminjaman sepeda, dengan kondisi cuaca yang lebih baik cenderung memiliki jumlah peminjaman yang lebih tinggi.")
